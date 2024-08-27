@@ -12,9 +12,10 @@ const AddItemModal = ({ addItem, onClose }) => {
     setItemData({ ...itemData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    addItem(itemData);
+    await addItem(itemData);
+    onClose();
   };
 
   return (

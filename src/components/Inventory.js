@@ -3,18 +3,26 @@ import { db } from '../firebase/config';
 import { collection, addDoc, query, where, onSnapshot, deleteDoc, doc } from 'firebase/firestore';
 import { useAuth } from '../contexts/AuthContext';
 import AddItemModal from './AddItemModal';
+import DeleteConfirmationModal from './DeleteConfirmationModal';
 
 const Inventory = () => {
   const [items, setItems] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [itemToDelete, setItemToDelete] = useState(null);
   const { user } = useAuth();
 
   useEffect(() => {
     if (user) {
+      setIsLoading(true);
       const q = query(collection(db, 'items'), where('userId', '==', user.uid));
       const unsubscribe = onSnapshot(q, (querySnapshot) => {
         const itemsData = querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
         setItems(itemsData);
+        setIsLoading(false);
+      }, (error) => {
+        console.error("Error fetching items:", error);
+        setIsLoading(false);
       });
 
       return () => unsubscribe();
@@ -36,6 +44,7 @@ const Inventory = () => {
   const deleteItem = async (itemId) => {
     try {
       await deleteDoc(doc(db, 'items', itemId));
+      setItemToDelete(null);
     } catch (error) {
       console.error('Error deleting item:', error);
     }
@@ -49,7 +58,9 @@ const Inventory = () => {
       >
         Add Item
       </button>
-      {items.length > 0 ? (
+      {isLoading ? (
+        <p>Loading inventory...</p>
+      ) : items.length > 0 ? (
         <table className="w-full border-collapse">
           <thead>
             <tr className="bg-gray-200">
@@ -69,7 +80,7 @@ const Inventory = () => {
                 <td className="border p-2">{item.expiryDate}</td>
                 <td className="border p-2">
                   <button
-                    onClick={() => deleteItem(item.id)}
+                    onClick={() => setItemToDelete(item)}
                     className="bg-red-500 text-white px-2 py-1 rounded hover:bg-red-600"
                   >
                     Delete
@@ -83,6 +94,13 @@ const Inventory = () => {
         <p>No items in inventory. Add some items to get started!</p>
       )}
       {isModalOpen && <AddItemModal addItem={addItem} onClose={() => setIsModalOpen(false)} />}
+      {itemToDelete && (
+        <DeleteConfirmationModal
+          item={itemToDelete}
+          onConfirm={() => deleteItem(itemToDelete.id)}
+          onCancel={() => setItemToDelete(null)}
+        />
+      )}
     </div>
   );
 };
