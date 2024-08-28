@@ -3,13 +3,14 @@ import { db } from '../firebase/config';
 import { collection, addDoc, query, where, onSnapshot, deleteDoc, doc } from 'firebase/firestore';
 import { useAuth } from '../contexts/AuthContext';
 import AddItemModal from './AddItemModal';
-import DeleteConfirmationModal from './DeleteConfirmationModal';
+import ConfirmationModal from './ConfirmationModal';
 
 const Inventory = () => {
   const [items, setItems] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [itemToDelete, setItemToDelete] = useState(null);
+  const [itemToDonate, setItemToDonate] = useState(null);
   const { user } = useAuth();
 
   useEffect(() => {
@@ -50,6 +51,20 @@ const Inventory = () => {
     }
   };
 
+  const donateItem = async (item) => {
+    try {
+      await addDoc(collection(db, 'marketplace'), {
+        ...item,
+        donorId: user.uid,
+        donatedAt: new Date().toISOString(),
+      });
+      await deleteDoc(doc(db, 'items', item.id));
+      setItemToDonate(null);
+    } catch (error) {
+      console.error('Error donating item:', error);
+    }
+  };
+
   return (
     <div className="w-full">
       <button
@@ -81,9 +96,15 @@ const Inventory = () => {
                 <td className="border p-2">
                   <button
                     onClick={() => setItemToDelete(item)}
-                    className="bg-red-500 text-white px-2 py-1 rounded hover:bg-red-600"
+                    className="bg-red-500 text-white px-2 py-1 rounded hover:bg-red-600 mr-2"
                   >
                     Delete
+                  </button>
+                  <button
+                    onClick={() => setItemToDonate(item)}
+                    className="bg-green-500 text-white px-2 py-1 rounded hover:bg-green-600"
+                  >
+                    Donate
                   </button>
                 </td>
               </tr>
@@ -94,11 +115,12 @@ const Inventory = () => {
         <p>No items in inventory. Add some items to get started!</p>
       )}
       {isModalOpen && <AddItemModal addItem={addItem} onClose={() => setIsModalOpen(false)} />}
-      {itemToDelete && (
-        <DeleteConfirmationModal
-          item={itemToDelete}
-          onConfirm={() => deleteItem(itemToDelete.id)}
-          onCancel={() => setItemToDelete(null)}
+      {(itemToDelete || itemToDonate) && (
+        <ConfirmationModal
+          item={itemToDelete || itemToDonate}
+          onConfirm={() => itemToDelete ? deleteItem(itemToDelete.id) : donateItem(itemToDonate)}
+          onCancel={() => itemToDelete ? setItemToDelete(null) : setItemToDonate(null)}
+          action={itemToDelete ? 'delete' : 'donate'}
         />
       )}
     </div>

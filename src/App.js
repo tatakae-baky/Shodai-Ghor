@@ -5,6 +5,7 @@ import Login from './components/Login';
 import Sidebar from './components/Sidebar';
 import HomePage from './pages/HomePage';
 import InventoryPage from './pages/InventoryPage';
+import MarketPlacePage from './pages/MarketPlacePage';
 
 const PrivateRoute = ({ children }) => {
   const { user, loading } = useAuth();
@@ -33,6 +34,7 @@ function App() {
                       <Routes>
                         <Route path="/" element={<HomePage />} />
                         <Route path="/inventory" element={<InventoryPage />} />
+                        <Route path="/marketplace" element={<MarketPlacePage />} />
                       </Routes>
                     </main>
                   </div>

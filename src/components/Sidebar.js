@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { FiHome, FiBox, FiMenu, FiLogOut } from 'react-icons/fi';
+import { FiHome, FiBox, FiShoppingBag, FiMenu, FiLogOut } from 'react-icons/fi';
 import { auth } from '../firebase/config';
 import { signOut } from 'firebase/auth';
 
@@ -37,6 +37,12 @@ const Sidebar = () => {
             <Link to="/inventory" className="flex items-center p-4 hover:bg-gray-700">
               <FiBox className="mr-4" />
               {!isCollapsed && <span>Inventory</span>}
+            </Link>
+          </li>
+          <li>
+            <Link to="/marketplace" className="flex items-center p-4 hover:bg-gray-700">
+              <FiShoppingBag className="mr-4" />
+              {!isCollapsed && <span>Marketplace</span>}
             </Link>
           </li>
         </ul>
