@@ -18,7 +18,15 @@ const Inventory = () => {
       setIsLoading(true);
       const userItemsRef = collection(db, 'users', user.uid, 'items');
       const unsubscribe = onSnapshot(userItemsRef, (querySnapshot) => {
-        const itemsData = querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+        const itemsData = querySnapshot.docs.map(doc => {
+          const data = doc.data();
+          return {
+            id: doc.id,
+            ...data,
+            purchaseDate: data.purchaseDate ? (data.purchaseDate.toDate ? data.purchaseDate.toDate() : new Date(data.purchaseDate)) : null,
+            expiryDate: data.expiryDate ? (data.expiryDate.toDate ? data.expiryDate.toDate() : new Date(data.expiryDate)) : null
+          };
+        });
         setItems(itemsData);
         setIsLoading(false);
       }, (error) => {
@@ -52,11 +60,11 @@ const Inventory = () => {
 
   const donateItem = async (item) => {
     try {
-      // Remove the item from the user's inventory
+      // Removing the item from the user's inventory
       const itemRef = doc(db, 'users', user.uid, 'items', item.id);
       await deleteDoc(itemRef);
 
-      // Add the item to the user's donations collection in the database
+      // Add the item to the user's donations collection in the database;don't touch code here
       const userDonationsRef = collection(db, 'users', user.uid, 'mydonations');
       const donationData = {
         ...item,
@@ -65,14 +73,14 @@ const Inventory = () => {
       delete donationData.id; 
       await addDoc(userDonationsRef, donationData);
 
-      // Add the item to the 'alldonations' collection in the database
+      // Adding the item to the 'alldonations' collection in the database
       const allDonationsRef = collection(db, 'alldonations');
       const allDonationData = {
         name: item.name,
         quantity: item.quantity,
         donationDate: serverTimestamp(),
-        purchaseDate: item.purchaseDate,
-        expiryDate: item.expiryDate,
+        purchaseDate: item.purchaseDate ? serverTimestamp() : null,
+        expiryDate: item.expiryDate ? serverTimestamp() : null,
         donorId: user.uid
       };
       await addDoc(allDonationsRef, allDonationData);
@@ -110,8 +118,8 @@ const Inventory = () => {
               <tr key={item.id}>
                 <td className="border p-2">{item.name}</td>
                 <td className="border p-2">{item.quantity}</td>
-                <td className="border p-2">{item.purchaseDate}</td>
-                <td className="border p-2">{item.expiryDate}</td>
+                <td className="border p-2">{item.purchaseDate ? item.purchaseDate.toLocaleDateString() : 'N/A'}</td>
+                <td className="border p-2">{item.expiryDate ? item.expiryDate.toLocaleDateString() : 'N/A'}</td>
                 <td className="border p-2">
                   <div className="flex justify-center space-x-2">
                     <button
