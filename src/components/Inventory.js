@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { db } from '../firebase/config';
-import { collection, addDoc, query, where, onSnapshot, deleteDoc, doc } from 'firebase/firestore';
+import { collection, addDoc, onSnapshot, deleteDoc, doc, serverTimestamp } from 'firebase/firestore';
 import { useAuth } from '../contexts/AuthContext';
 import AddItemModal from './AddItemModal';
 import ConfirmationModal from './ConfirmationModal';
@@ -16,8 +16,8 @@ const Inventory = () => {
   useEffect(() => {
     if (user) {
       setIsLoading(true);
-      const q = query(collection(db, 'items'), where('userId', '==', user.uid));
-      const unsubscribe = onSnapshot(q, (querySnapshot) => {
+      const userItemsRef = collection(db, 'users', user.uid, 'items');
+      const unsubscribe = onSnapshot(userItemsRef, (querySnapshot) => {
         const itemsData = querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
         setItems(itemsData);
         setIsLoading(false);
@@ -32,10 +32,8 @@ const Inventory = () => {
 
   const addItem = async (newItem) => {
     try {
-      await addDoc(collection(db, 'items'), {
-        ...newItem,
-        userId: user.uid,
-      });
+      const userItemsRef = collection(db, 'users', user.uid, 'items');
+      await addDoc(userItemsRef, newItem);
       setIsModalOpen(false);
     } catch (error) {
       console.error('Error adding item:', error);
@@ -44,7 +42,8 @@ const Inventory = () => {
 
   const deleteItem = async (itemId) => {
     try {
-      await deleteDoc(doc(db, 'items', itemId));
+      const itemRef = doc(db, 'users', user.uid, 'items', itemId);
+      await deleteDoc(itemRef);
       setItemToDelete(null);
     } catch (error) {
       console.error('Error deleting item:', error);
@@ -53,15 +52,35 @@ const Inventory = () => {
 
   const donateItem = async (item) => {
     try {
-      await addDoc(collection(db, 'marketplace'), {
+      // Remove the item from the user's inventory
+      const itemRef = doc(db, 'users', user.uid, 'items', item.id);
+      await deleteDoc(itemRef);
+
+      // Add the item to the user's donations collection in the database
+      const userDonationsRef = collection(db, 'users', user.uid, 'mydonations');
+      const donationData = {
         ...item,
-        donorId: user.uid,
-        donatedAt: new Date().toISOString(),
-      });
-      await deleteDoc(doc(db, 'items', item.id));
-      setItemToDonate(null);
+        donationDate: serverTimestamp()
+      };
+      delete donationData.id; 
+      await addDoc(userDonationsRef, donationData);
+
+      // Add the item to the 'alldonations' collection in the database
+      const allDonationsRef = collection(db, 'alldonations');
+      const allDonationData = {
+        name: item.name,
+        quantity: item.quantity,
+        donationDate: serverTimestamp(),
+        purchaseDate: item.purchaseDate,
+        expiryDate: item.expiryDate,
+        donorId: user.uid
+      };
+      await addDoc(allDonationsRef, allDonationData);
+
+      setItemToDonate(null); 
     } catch (error) {
       console.error('Error donating item:', error);
+      setItemToDonate(null); 
     }
   };
 
@@ -94,18 +113,20 @@ const Inventory = () => {
                 <td className="border p-2">{item.purchaseDate}</td>
                 <td className="border p-2">{item.expiryDate}</td>
                 <td className="border p-2">
-                  <button
-                    onClick={() => setItemToDelete(item)}
-                    className="bg-red-500 text-white px-2 py-1 rounded hover:bg-red-600 mr-2"
-                  >
-                    Delete
-                  </button>
-                  <button
-                    onClick={() => setItemToDonate(item)}
-                    className="bg-green-500 text-white px-2 py-1 rounded hover:bg-green-600"
-                  >
-                    Donate
-                  </button>
+                  <div className="flex justify-center space-x-2">
+                    <button
+                      onClick={() => setItemToDelete(item)}
+                      className="bg-red-500 text-white px-2 py-1 rounded hover:bg-red-600"
+                    >
+                      Delete
+                    </button>
+                    <button
+                      onClick={() => setItemToDonate(item)}
+                      className="bg-green-500 text-white px-2 py-1 rounded hover:bg-green-600"
+                    >
+                      Donate
+                    </button>
+                  </div>
                 </td>
               </tr>
             ))}
@@ -115,12 +136,20 @@ const Inventory = () => {
         <p>No items in inventory. Add some items to get started!</p>
       )}
       {isModalOpen && <AddItemModal addItem={addItem} onClose={() => setIsModalOpen(false)} />}
-      {(itemToDelete || itemToDonate) && (
+      {itemToDelete && (
         <ConfirmationModal
-          item={itemToDelete || itemToDonate}
-          onConfirm={() => itemToDelete ? deleteItem(itemToDelete.id) : donateItem(itemToDonate)}
-          onCancel={() => itemToDelete ? setItemToDelete(null) : setItemToDonate(null)}
-          action={itemToDelete ? 'delete' : 'donate'}
+          item={itemToDelete}
+          onConfirm={() => deleteItem(itemToDelete.id)}
+          onCancel={() => setItemToDelete(null)}
+          action="delete"
+        />
+      )}
+      {itemToDonate && (
+        <ConfirmationModal
+          item={itemToDonate}
+          onConfirm={() => donateItem(itemToDonate)}
+          onCancel={() => setItemToDonate(null)}
+          action="donate"
         />
       )}
     </div>

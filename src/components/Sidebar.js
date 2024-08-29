@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { FiHome, FiBox, FiShoppingBag, FiMenu, FiLogOut } from 'react-icons/fi';
+import { FiHome, FiBox, FiMenu, FiLogOut, FiGift, FiHeart } from 'react-icons/fi';
 import { auth } from '../firebase/config';
 import { signOut } from 'firebase/auth';
 
@@ -40,9 +40,15 @@ const Sidebar = () => {
             </Link>
           </li>
           <li>
-            <Link to="/marketplace" className="flex items-center p-4 hover:bg-gray-700">
-              <FiShoppingBag className="mr-4" />
-              {!isCollapsed && <span>Marketplace</span>}
+            <Link to="/my-donations" className="flex items-center p-4 hover:bg-gray-700">
+              <FiGift className="mr-4" />
+              {!isCollapsed && <span>My Donations</span>}
+            </Link>
+          </li>
+          <li>
+            <Link to="/all-donations" className="flex items-center p-4 hover:bg-gray-700">
+              <FiHeart className="mr-4" />
+              {!isCollapsed && <span>All Donations</span>}
             </Link>
           </li>
         </ul>
