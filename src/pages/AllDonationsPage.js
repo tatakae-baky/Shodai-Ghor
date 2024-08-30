@@ -102,47 +102,49 @@ const AllDonationsPage = () => {
 
   return (
     <div className="w-full p-4">
-      <h1 className="text-2xl font-bold mb-4">All Donations</h1>
+      <h1 className="text-3xl font-normal text-center text-[#333F72] mb-4">All Donations</h1>
       {isLoading ? (
         <p>Loading donations...</p>
       ) : donations.length > 0 ? (
         <table className="w-full border-collapse">
           <thead>
-            <tr className="bg-gray-200">
-              <th className="border p-2">Item Name</th>
-              <th className="border p-2">Quantity</th>
-              <th className="border p-2">Donation Date</th>
-              <th className="border p-2">Purchased On</th>
-              <th className="border p-2">Expiry Date</th>
-              <th className="border p-2">Action</th>
+            <tr className="bg-[#EAD4B7]">
+              <th className="border font-normal border-[#EAD4B7] p-3 text-[#333F72]">Item Name</th>
+              <th className="border font-normal border-[#EAD4B7] p-3 text-[#333F72]">Quantity</th>
+              <th className="border font-normal border-[#EAD4B7] p-3 text-[#333F72]">Donation Date</th>
+              <th className="border font-normal border-[#EAD4B7] p-3 text-[#333F72]">Purchased On</th>
+              <th className="border font-normal border-[#EAD4B7] p-3 text-[#333F72]">Expiry Date</th>
+              <th className="border font-normal border-[#EAD4B7] p-3 text-[#333F72]">Action</th>
             </tr>
           </thead>
           <tbody>
             {donations.map((donation) => (
               <tr key={donation.id}>
-                <td className="border p-2">{donation.name}</td>
-                <td className="border p-2">{donation.quantity}</td>
-                <td className="border p-2">
+                <td className="border font-normal border-[#EAD4B7] p-3 text-[#E56E0C] font-semibold">{donation.name}</td>
+                <td className="border border-[#EAD4B7] p-3 text-center">{donation.quantity}</td>
+                <td className="border border-[#EAD4B7] p-3 text-center">
                   {donation.donationDate ? donation.donationDate.toLocaleDateString() : 'N/A'}
                 </td>
-                <td className="border p-2">
+                <td className="border border-[#EAD4B7] p-3 text-center">
                   {donation.purchaseDate ? donation.purchaseDate.toLocaleDateString() : 'N/A'}
                 </td>
-                <td className="border p-2">
+                <td className="border border-[#EAD4B7] p-3 text-center">
                   {donation.expiryDate ? donation.expiryDate.toLocaleDateString() : 'N/A'}
                 </td>
-                <td className="border p-2">
-                  <button
-                    onClick={() => handleRequest(donation)}
-                    className={`px-4 py-2 rounded ${
-                      userRequests[donation.id]
-                        ? 'bg-gray-300 cursor-not-allowed'
-                        : 'bg-blue-500 text-white hover:bg-blue-600'
-                    }`}
-                    disabled={!!userRequests[donation.id]}
-                  >
-                    {getRequestButtonText(donation.id)}
-                  </button>
+                <td className="border border-[#EAD4B7] p-3">
+                  <div className="flex justify-center">
+                    <button
+                      onClick={() => handleRequest(donation)}
+                      className={`px-4 py-1 rounded-tl-2xl rounded-br-2xl ${
+                        userRequests[donation.id]
+                          ? 'bg-gray-300 cursor-not-allowed'
+                          : 'bg-[#478242] text-white hover:bg-opacity-90'
+                      }`}
+                      disabled={!!userRequests[donation.id]}
+                    >
+                      {getRequestButtonText(donation.id)}
+                    </button>
+                  </div>
                 </td>
               </tr>
             ))}

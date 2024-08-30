@@ -24,7 +24,7 @@ function App() {
   return (
     <AuthProvider>
       <Router>
-        <div className="flex h-screen bg-gray-100">
+        <div className="flex h-screen bg-main font-aladin">
           <Routes>
             <Route path="/login" element={<Login />} />
             <Route
@@ -33,7 +33,7 @@ function App() {
                 <PrivateRoute>
                   <div className="flex w-full">
                     <Sidebar />
-                    <main className="flex-1 overflow-y-auto">
+                    <main className="flex-1 overflow-y-auto bg-main">
                       <Routes>
                         <Route path="/" element={<HomePage />} />
                         <Route path="/inventory" element={<InventoryPage />} />

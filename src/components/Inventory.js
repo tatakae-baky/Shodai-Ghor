@@ -64,7 +64,7 @@ const Inventory = () => {
       const itemRef = doc(db, 'users', user.uid, 'items', item.id);
       await deleteDoc(itemRef);
 
-      // Add the item to the user's donations collection in the database;don't touch code here
+      //  he item to the user's donations collection in the database;don't touch code here
       const userDonationsRef = collection(db, 'users', user.uid, 'mydonations');
       const donationData = {
         ...item,
@@ -94,43 +94,50 @@ const Inventory = () => {
 
   return (
     <div className="w-full">
-      <button
-        onClick={() => setIsModalOpen(true)}
-        className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 mb-4"
-      >
-        Add Item
-      </button>
+      <h1 className="text-3xl font-normal text-center text-[#333F72] mb-4">Inventory</h1>
+      <div className="flex justify-start mb-6">
+        <button
+          onClick={() => setIsModalOpen(true)}
+          className="bg-[#333F72] text-white px-6 py-2 rounded-tl-2xl rounded-br-2xl hover:bg-opacity-90"
+        >
+          Add Items
+        </button>
+      </div>
       {isLoading ? (
         <p>Loading inventory...</p>
       ) : items.length > 0 ? (
         <table className="w-full border-collapse">
           <thead>
-            <tr className="bg-gray-200">
-              <th className="border p-2">Item Name</th>
-              <th className="border p-2">Quantity</th>
-              <th className="border p-2">Purchasing Date</th>
-              <th className="border p-2">Expiry Date</th>
-              <th className="border p-2">Actions</th>
+            <tr className="bg-[#EAD4B7]">
+              <th className="border font-normal border-[#EAD4B7] p-3 text-[#333F72]">Item Name</th>
+              <th className="border font-normal border-[#EAD4B7] p-3 text-[#333F72]">Quantity</th>
+              <th className="border font-normal border-[#EAD4B7] p-3 text-[#333F72]">Purchasing Date</th>
+              <th className="border font-normal border-[#EAD4B7] p-3 text-[#333F72]">Expiry Date</th>
+              <th className="border font-normal border-[#EAD4B7] p-3 text-[#333F72]">Actions</th>
             </tr>
           </thead>
           <tbody>
             {items.map((item) => (
               <tr key={item.id}>
-                <td className="border p-2">{item.name}</td>
-                <td className="border p-2">{item.quantity}</td>
-                <td className="border p-2">{item.purchaseDate ? item.purchaseDate.toLocaleDateString() : 'N/A'}</td>
-                <td className="border p-2">{item.expiryDate ? item.expiryDate.toLocaleDateString() : 'N/A'}</td>
-                <td className="border p-2">
+                <td className="border font-normal border-[#EAD4B7] p-3 text-[#E56E0C] font-semibold">{item.name}</td>
+                <td className="border border-[#EAD4B7] p-3 text-center">{item.quantity}</td>
+                <td className="border border-[#EAD4B7] p-3 text-center">
+                  {item.purchaseDate ? item.purchaseDate.toLocaleDateString() : 'N/A'}
+                </td>
+                <td className="border border-[#EAD4B7] p-3 text-center">
+                  {item.expiryDate ? item.expiryDate.toLocaleDateString() : 'N/A'}
+                </td>
+                <td className="border border-[#EAD4B7] p-3">
                   <div className="flex justify-center space-x-2">
                     <button
                       onClick={() => setItemToDelete(item)}
-                      className="bg-red-500 text-white px-2 py-1 rounded hover:bg-red-600"
+                      className="bg-[#DB3A3A] text-white px-6 py-1 rounded-tl-2xl rounded-br-2xl hover:bg-opacity-90"
                     >
                       Delete
                     </button>
                     <button
                       onClick={() => setItemToDonate(item)}
-                      className="bg-green-500 text-white px-2 py-1 rounded hover:bg-green-600"
+                      className="bg-[#478242] text-white px-4 py-1 rounded-tl-2xl rounded-br-2xl hover:bg-opacity-90"
                     >
                       Donate
                     </button>

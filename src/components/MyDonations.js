@@ -31,25 +31,25 @@ const MyDonations = () => {
   }, [user]);
 
   return (
-    <div className="w-full p-4">
-      <h1 className="text-2xl font-bold mb-4">My Donations</h1>
+    <div className="w-full">
+      <h1 className="text-3xl font-normal text-center text-[#333F72] mb-4">My Donations</h1>
       {isLoading ? (
         <p>Loading donations...</p>
       ) : donations.length > 0 ? (
         <table className="w-full border-collapse">
           <thead>
-            <tr className="bg-gray-200">
-              <th className="border p-2">Item Name</th>
-              <th className="border p-2">Quantity</th>
-              <th className="border p-2">Donation Date</th>
+            <tr className="bg-[#EAD4B7]">
+              <th className="border font-normal border-[#EAD4B7] p-3 text-[#333F72]">Item Name</th>
+              <th className="border font-normal border-[#EAD4B7] p-3 text-[#333F72]">Quantity</th>
+              <th className="border font-normal border-[#EAD4B7] p-3 text-[#333F72]">Donation Date</th>
             </tr>
           </thead>
           <tbody>
             {donations.map((donation) => (
               <tr key={donation.id}>
-                <td className="border p-2">{donation.name}</td>
-                <td className="border p-2">{donation.quantity}</td>
-                <td className="border p-2">
+                <td className="border font-normal border-[#EAD4B7] p-3 text-[#E56E0C] font-semibold">{donation.name}</td>
+                <td className="border border-[#EAD4B7] p-3 text-center">{donation.quantity}</td>
+                <td className="border border-[#EAD4B7] p-3 text-center">
                   {donation.donationDate ? donation.donationDate.toLocaleDateString() : 'N/A'}
                 </td>
               </tr>

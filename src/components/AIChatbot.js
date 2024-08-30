@@ -75,8 +75,6 @@ const AIChatbot = () => {
     // You might want to add some visual feedback here
   };
 
-  
-
   return (
     <div className={`chatbot-container ${isHeaderHidden ? 'hide-header' : ''}`}>
       <header className="chatbot-header">

@@ -1,11 +1,11 @@
-/* Importing Google Fonts */
-@import url('https://fonts.googleapis.com/css2?family=Aladin:wght@400;500;600&display=swap');
+/* Importing Google Fonts - Aladin */
+@import url('https://fonts.googleapis.com/css2?family=Aladin&display=swap');
 
 .chatbot-container * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: "Aladin", sans-serif;
+    font-family: "Aladin", cursive;
 }
 
 .chatbot-container {
@@ -266,7 +266,8 @@
 }
 
 .chatbot-typing-area .chatbot-icon:hover {
-    background: transparent!important;
+    background: var(--secondary-hover-color)!important;
+    color: var(--placeholder-color)!important;
 }
 
 .chatbot-typing-area .chatbot-input-wrapper .chatbot-icon {
@@ -278,10 +279,6 @@
     color: var(--text-color);
     transform: scale(0);
     transition: transform 0.2s ease;
-}
-
-.chatbot-typing-area .chatbot-input-wrapper .chatbotcon:hover {
-    color: var(--placeholder-color)!important;
 }
 
 .chatbot-typing-area .chatbot-input-wrapper .chatbot-typing-input:valid ~ .chatbot-icon {
