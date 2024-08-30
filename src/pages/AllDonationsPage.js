@@ -23,18 +23,21 @@ const AllDonationsPage = () => {
         orderBy('donorId'),
         orderBy('donationDate', 'desc')
       );
-
+  
       const unsubscribe = onSnapshot(q, 
         async (querySnapshot) => {
-          const donationsData = querySnapshot.docs.map(doc => ({
-            id: doc.id,
-            ...doc.data(),
-            donationDate: doc.data().donationDate?.toDate(),
-            purchaseDate: doc.data().purchaseDate ? new Date(doc.data().purchaseDate.seconds * 1000) : null,
-            expiryDate: doc.data().expiryDate ? new Date(doc.data().expiryDate.seconds * 1000) : null
-          }));
+          const donationsData = querySnapshot.docs.map(doc => {
+            const data = doc.data();
+            return {
+              id: doc.id,
+              ...data,
+              donationDate: data.donationDate?.toDate(),
+              purchaseDate: data.purchaseDate?.toDate(),
+              expiryDate: data.expiryDate?.toDate()
+            };
+          });
           setDonations(donationsData);
-
+  
           const requestsRef = collection(db, 'requests');
           const userRequestsQuery = query(requestsRef, where('requesterId', '==', user.uid));
           const userRequestsSnapshot = await getDocs(userRequestsQuery);
@@ -43,7 +46,7 @@ const AllDonationsPage = () => {
             userRequestsData[doc.data().donationId] = doc.data().status;
           });
           setUserRequests(userRequestsData);
-
+  
           setIsLoading(false);
         },
         (err) => {
@@ -52,7 +55,7 @@ const AllDonationsPage = () => {
           setIsLoading(false);
         }
       );
-
+  
       return () => unsubscribe();
     }
   }, [user]);

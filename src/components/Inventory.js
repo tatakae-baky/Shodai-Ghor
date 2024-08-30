@@ -64,7 +64,7 @@ const Inventory = () => {
       const itemRef = doc(db, 'users', user.uid, 'items', item.id);
       await deleteDoc(itemRef);
 
-      //  he item to the user's donations collection in the database;don't touch code here
+      // Adding the item to the user's donations collection in the database
       const userDonationsRef = collection(db, 'users', user.uid, 'mydonations');
       const donationData = {
         ...item,
@@ -79,8 +79,8 @@ const Inventory = () => {
         name: item.name,
         quantity: item.quantity,
         donationDate: serverTimestamp(),
-        purchaseDate: item.purchaseDate ? serverTimestamp() : null,
-        expiryDate: item.expiryDate ? serverTimestamp() : null,
+        purchaseDate: item.purchaseDate,
+        expiryDate: item.expiryDate,
         donorId: user.uid
       };
       await addDoc(allDonationsRef, allDonationData);
