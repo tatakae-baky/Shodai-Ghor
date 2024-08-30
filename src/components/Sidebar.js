@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { FiHome, FiBox, FiMenu, FiLogOut, FiGift, FiHeart, FiMessageSquare, FiCpu } from 'react-icons/fi';
+import {FiBox, FiMenu, FiLogOut, FiGift, FiHeart, FiMessageSquare, FiCpu } from 'react-icons/fi';
 import { auth } from '../firebase/config';
 import { signOut } from 'firebase/auth';
 
@@ -38,7 +38,7 @@ const Sidebar = () => {
       </div>
       <nav className="flex-grow">
         <ul>
-          {[{ path: '/', icon: FiHome, label: 'Home' },
+          {[
             { path: '/inventory', icon: FiBox, label: 'Inventory' },
             { path: '/my-donations', icon: FiGift, label: 'My Donations' },
             { path: '/all-donations', icon: FiHeart, label: 'All Donations' },

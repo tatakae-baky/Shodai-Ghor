@@ -36,7 +36,7 @@ function AppContent() {
       <Sidebar />
       <main className="flex-1 overflow-y-auto bg-main">
         <Routes>
-          <Route path="/" element={<HomePage />} />
+          {/* <Route path="/" element={<HomePage />} /> */}
           <Route path="/inventory" element={<InventoryPage />} />
           <Route path="/my-donations" element={<MyDonationsPage />} />
           <Route path="/all-donations" element={<AllDonationsPage />} />
