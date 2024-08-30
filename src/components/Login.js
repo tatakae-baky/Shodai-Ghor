@@ -10,7 +10,7 @@ const Login = () => {
 
   useEffect(() => {
     if (user) {
-      navigate('/');
+      navigate('/home');
     }
   }, [user, navigate]);
 
@@ -18,15 +18,17 @@ const Login = () => {
     const provider = new GoogleAuthProvider();
     try {
       await signInWithPopup(auth, provider);
+      // Navigation will be handled by the useEffect hook
     } catch (error) {
       console.error('Error signing in with Google:', error);
+      // You might want to show an error message to the user here
     }
   };
 
   return (
     <div className="flex items-center justify-center h-screen bg-gray-100">
       <div className="p-8 bg-white rounded shadow-md">
-        <h1 className="mb-4 text-2xl font-bold text-center">Shodai Ghor</h1>
+        <h1 className="mb-4 text-2xl font-bold text-center">Welcome to Shodai Ghor</h1>
         <button
           onClick={handleGoogleSignIn}
           className="w-full px-4 py-2 font-bold text-white bg-blue-500 rounded hover:bg-blue-600 focus:outline-none focus:shadow-outline"
