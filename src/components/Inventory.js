@@ -119,7 +119,7 @@ const Inventory = () => {
           <tbody>
             {items.map((item) => (
               <tr key={item.id}>
-                <td className="border font-normal border-[#EAD4B7] p-3 text-[#E56E0C] font-semibold">{item.name}</td>
+                <td className="border border-[#EAD4B7] p-3 text-[#E56E0C] font-normal">{item.name}</td>
                 <td className="border border-[#EAD4B7] p-3 text-center">{item.quantity}</td>
                 <td className="border border-[#EAD4B7] p-3 text-center">
                   {item.purchaseDate ? item.purchaseDate.toLocaleDateString() : 'N/A'}

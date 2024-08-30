@@ -120,7 +120,7 @@ const AllDonationsPage = () => {
           <tbody>
             {donations.map((donation) => (
               <tr key={donation.id}>
-                <td className="border font-normal border-[#EAD4B7] p-3 text-[#E56E0C] font-semibold">{donation.name}</td>
+                <td className="border border-[#EAD4B7] p-3 text-[#E56E0C] font-normal">{donation.name}</td>
                 <td className="border border-[#EAD4B7] p-3 text-center">{donation.quantity}</td>
                 <td className="border border-[#EAD4B7] p-3 text-center">
                   {donation.donationDate ? donation.donationDate.toLocaleDateString() : 'N/A'}

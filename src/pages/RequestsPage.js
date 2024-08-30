@@ -127,25 +127,25 @@ const RequestsPage = () => {
     const renderRequestsList = (requests, isIncoming) => (
         <ul className="space-y-4">
             {requests.map((request) => (
-                <li key={request.id} className="bg-white p-4 rounded shadow">
-                    <p><strong>Item:</strong> {request.itemName || 'N/A'}</p>
-                    <p><strong>Quantity:</strong> {request.quantity || 'N/A'}</p>
-                    <p><strong>Expiry Date:</strong> {formatDate(request.expiryDate)}</p>
-                    <p><strong>Purchase Date:</strong> {formatDate(request.purchaseDate)}</p>
-                    <p><strong>Status:</strong> {request.status}</p>
-                    <p><strong>Message:</strong> {request.message}</p>
-                    <p><strong>Date:</strong> {formatDate(request.timestamp)}</p>
+                <li key={request.id} className="bg-[#EAD4B7] p-4 rounded-tl-2xl rounded-br-2xl shadow">
+                    <p><strong className="text-[#333F72]">Item:</strong> <span className="text-[#E56E0C] font-normal">{request.itemName || 'N/A'}</span></p>
+                    <p><strong className="text-[#333F72]">Quantity:</strong> {request.quantity || 'N/A'}</p>
+                    <p><strong className="text-[#333F72]">Expiry Date:</strong> {formatDate(request.expiryDate)}</p>
+                    <p><strong className="text-[#333F72]">Purchase Date:</strong> {formatDate(request.purchaseDate)}</p>
+                    <p><strong className="text-[#333F72]">Status:</strong> {request.status}</p>
+                    <p><strong className="text-[#333F72]">Message:</strong> {request.message}</p>
+                    <p><strong className="text-[#333F72]">Date:</strong> {formatDate(request.timestamp)}</p>
                     {isIncoming && request.status === 'pending' && (
-                        <div className="mt-2">
+                        <div className="mt-4 flex space-x-2">
                             <button
                                 onClick={() => handleAcceptRequest(request)}
-                                className="bg-green-500 text-white px-4 py-2 rounded mr-2 hover:bg-green-600"
+                                className="bg-[#478242] text-white px-6 py-2 rounded-tl-2xl rounded-br-2xl hover:bg-opacity-90"
                             >
                                 Accept
                             </button>
                             <button
                                 onClick={() => handleRejectRequest(request)}
-                                className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600"
+                                className="bg-[#DB3A3A] text-white px-6 py-2 rounded-tl-2xl rounded-br-2xl hover:bg-opacity-90"
                             >
                                 Reject
                             </button>
@@ -158,11 +158,11 @@ const RequestsPage = () => {
 
     const TabButton = ({ label, isActive, onClick }) => (
         <button
-            className={`px-4 py-2 font-semibold ${
+            className={`px-6 py-2 font-semibold ${
                 isActive
-                    ? 'bg-blue-500 text-white'
-                    : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
-            } rounded-t-lg`}
+                    ? 'bg-[#46507D] text-white'
+                    : 'bg-[#657AD6] text-white hover:bg-opacity-90'
+            } rounded-tl-2xl rounded-br-2xl`}
             onClick={onClick}
         >
             {label}
@@ -174,10 +174,10 @@ const RequestsPage = () => {
     }
 
     return (
-        <div className="p-4">
-            <h1 className="text-2xl font-bold mb-6">Requests</h1>
+        <div className="p-4 bg-[#F3EDE1] min-h-screen">
+            <h1 className="text-3xl font-normal text-center text-[#333F72] mb-6">Requests</h1>
             
-            <div className="mb-4">
+            <div className="mb-6 flex space-x-4">
                 <TabButton
                     label="Incoming Requests"
                     isActive={activeTab === 'incoming'}
@@ -191,26 +191,26 @@ const RequestsPage = () => {
             </div>
 
             {isLoading ? (
-                <p>Loading requests...</p>
+                <p className="text-center text-[#333F72]">Loading requests...</p>
             ) : (
-                <div className="bg-white p-4 rounded-b-lg shadow">
+                <div className="bg-[#F3EDE1] p-6 rounded-tl-2xl rounded-br-2xl shadow">
                     {activeTab === 'incoming' && (
                         <>
-                            <h2 className="text-xl font-semibold mb-4">Incoming Requests</h2>
+                            <h2 className="text-2xl font-semibold mb-4 text-[#333F72]">Incoming Requests</h2>
                             {incomingRequests.length > 0 ? (
                                 renderRequestsList(incomingRequests, true)
                             ) : (
-                                <p>No incoming requests at the moment.</p>
+                                <p className="text-[#333F72]">No incoming requests at the moment.</p>
                             )}
                         </>
                     )}
                     {activeTab === 'outgoing' && (
                         <>
-                            <h2 className="text-xl font-semibold mb-4">Outgoing Requests</h2>
+                            <h2 className="text-2xl font-semibold mb-4 text-[#333F72]">Outgoing Requests</h2>
                             {outgoingRequests.length > 0 ? (
                                 renderRequestsList(outgoingRequests, false)
                             ) : (
-                                <p>No outgoing requests at the moment.</p>
+                                <p className="text-[#333F72]">No outgoing requests at the moment.</p>
                             )}
                         </>
                     )}

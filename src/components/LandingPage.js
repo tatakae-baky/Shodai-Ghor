@@ -118,8 +118,8 @@ const LandingPage = () => {
           <h2>Chatbot Section</h2>
           <p className="chatbot-description">Here you can interact with our chatbot Cheffy !!.</p>
           <div className="chatbot_images">
-            <img src="/images/Screenshot 2024-08-30 032905.png" alt="Chatbot Interface 1" />
-            <img src="/images/Screenshot 2024-08-30 033003.png" alt="Chatbot Interface 2" />
+            <img src="/images/AiInterface.png" alt="Chatbot Interface 1" />
+            <img src="/images/AiChat.png" alt="Chatbot Interface 2" />
           </div>
         </div>
       </section>
@@ -133,7 +133,7 @@ const LandingPage = () => {
             <li>Step 2: Send request to arrange a pickup or drop-off.</li>
           </ul>
           <div className="donation_images">
-            <img src="/images/Screenshot 2024-08-30 100608.png" alt="donation Interface 1" />
+            <img src="/images/AllDonations.png" alt="donation Interface 1" />
           </div>
         </div>
       </section>
