@@ -71,12 +71,15 @@ const AIChatbot = () => {
   };
 
   const copyMessage = (message) => {
+
     navigator.clipboard.writeText(message);
     // You might want to add some visual feedback here
   };
 
-  
+  // Revert the icon after 1 second
+  setTimeout(() => setCopied(false), 1000);
 
+  
   return (
     <div className={`chatbot-container ${isHeaderHidden ? 'hide-header' : ''}`}>
       <header className="chatbot-header">
