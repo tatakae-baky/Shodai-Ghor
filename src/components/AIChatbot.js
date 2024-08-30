@@ -71,10 +71,16 @@ const AIChatbot = () => {
   };
 
   const copyMessage = (message) => {
+    // const messageText = message.parentElement.querySelector(".text").innerText;
+
     navigator.clipboard.writeText(message);
     // You might want to add some visual feedback here
-  };
+    // Revert the icon after 1 second
+    // message.innerText = "done"
+    // setTimeout(() => message.innerText = "copy_content", 1000);
 
+  };
+  
   return (
     <div className={`chatbot-container ${isHeaderHidden ? 'hide-header' : ''}`}>
       <header className="chatbot-header">
@@ -119,6 +125,7 @@ const AIChatbot = () => {
             </div>
             {!message.loading && (
               <span onClick={() => copyMessage(message.text)} className="chatbot-icon material-symbols-rounded">content_copy</span>
+            //   {copied ? <span>check</span> : <span>content_copy</span>}
             )}
           </div>
         ))}

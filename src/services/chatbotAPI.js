@@ -1,7 +1,7 @@
 const API_KEY = "AIzaSyBS48GrEWFc_RkiFnykqTUrAvUt6IEhk84";
 const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${API_KEY}`;
 
-const systemInstruction = "You are an expert at giving recipes to users with clear instructions. You can generally give any recipe but if users ask you to suggest any recipe from a list of ingredients then you can suggest recipes that can be made with the ingredients and if no food is possible to make with the ingredients then you can suggest them about restocking their pantry. In general, you would guide users to have a healthy diet during conversations. Your job is assist them as a chef but also motivate them for daily life.";
+const systemInstruction = "Your name is Cheffy. You are an expert at giving recipes to users with clear instructions. You can generally give any recipe but if users ask you to suggest any recipe from a list of ingredients then you can suggest recipes that can be made with the ingredients and if no food is possible to make with the ingredients then you can suggest them about restocking their pantry. In general, you would guide users to have a healthy diet during conversations. Your job is assist them as a chef but also motivate them for daily life.";
 
 export const generateAPIResponse = async (userMessage) => {
   try {
@@ -32,11 +32,11 @@ export const generateAPIResponse = async (userMessage) => {
       })
     });
 
-    if (!response.ok) {
-      throw new Error('API request failed');
-    }
-
+    
     const data = await response.json();
+    if (!response.ok) throw new Error('API request failed');
+    
+    // Get the API response text and remove astericks from it
     const apiResponse = data?.candidates[0].content.parts[0].text.replace(/\*\*(.*?)\*\*/g, '$1');
     return apiResponse;
   } catch (error) {

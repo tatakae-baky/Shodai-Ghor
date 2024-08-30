@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-d
 import { AuthProvider, useAuth } from './contexts/AuthContext';
 import LandingPage from './components/LandingPage';
 import Sidebar from './components/Sidebar';
-import HomePage from './pages/HomePage';
+// import HomePage from './pages/HomePage';
 import InventoryPage from './pages/InventoryPage';
 import MyDonationsPage from './pages/MyDonationsPage';
 import AllDonationsPage from './pages/AllDonationsPage';
