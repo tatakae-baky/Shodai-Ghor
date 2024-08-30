@@ -273,7 +273,7 @@
 }
 
 .chatbot-typing-area .chatbot-typing-input::placeholder {
-    color: var(--placeholder-color);
+    color: var(--secondary-color);
 }
 
 .chatbot-typing-area .chatbot-icon {
@@ -297,13 +297,13 @@
     outline: none;
     border: none;
     background: none;
-    color: var(--text-color);
+    color: var(--secondary-color);
     transform: scale(0);
     transition: transform 0.2s ease;
 }
 
 .chatbot-typing-area .chatbot-input-wrapper .chatbot-icon:hover {
-    color: var(--secondary-color)!important;
+    color: var(--placeholder-color)!important;
 }
 
 .chatbot-typing-area .chatbot-input-wrapper .chatbot-typing-input:valid ~ .chatbot-icon {
