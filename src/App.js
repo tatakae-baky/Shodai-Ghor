@@ -8,6 +8,7 @@ import InventoryPage from './pages/InventoryPage';
 import MyDonationsPage from './pages/MyDonationsPage';
 import AllDonationsPage from './pages/AllDonationsPage';
 import RequestsPage from './pages/RequestsPage';
+import AIChatbot from './components/AIChatbot';
 
 const PrivateRoute = ({ children }) => {
   const { user, loading } = useAuth();
@@ -39,6 +40,7 @@ function App() {
                         <Route path="/my-donations" element={<MyDonationsPage />} />
                         <Route path="/all-donations" element={<AllDonationsPage />} />
                         <Route path="/requests" element={<RequestsPage />} />
+                        <Route path="/chatbot" element={<AIChatbot />} />
                       </Routes>
                     </main>
                   </div>
